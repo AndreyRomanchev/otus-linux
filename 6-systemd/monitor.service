@@ -1,0 +1,7 @@
+[Unit]
+Description=Monitor
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/sysconfig/monitor
+ExecStart=/usr/local/bin/monitor.sh

@@ -1,0 +1,12 @@
+[Unit]
+Description=FastCGI spawner
+After=syslog.target network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/sysconfig/spawn-fcgi
+ExecStart=/usr/bin/spawn-fcgi $OPTIONS
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

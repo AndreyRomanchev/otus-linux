@@ -1,0 +1,12 @@
+[Unit]
+Description=Runs monitor every 30s
+
+[Timer]
+# Run after booting one minute
+OnBootSec=1min
+# Run every one hour or one munite
+OnUnitActiveSec=30
+Unit=monitor.service
+
+[Install]
+WantedBy=multi-user.target
