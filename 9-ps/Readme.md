@@ -37,22 +37,21 @@ use kill -9 to quit
 use kill -9 to quit
 [1]    25108 killed     ./signal.py
 ```
-4) `ionice.sh`<br/>
+4) `sudo ionice.sh`<br/>
 реализовать 2 конкурирующих процесса по IO. пробовать запустить с разными ionice
 - Результат ДЗ - скрипт запускающий 2 процесса с разными ionice, замеряющий время выполнения и лог консоли
 ```
-[root@otuslinux vagrant]# cat ionice.log
-Sat Dec 1 22:17:17 UTC 2018  Start function with ionice3
-Sat Dec 1 22:17:17 UTC 2018  Start function with ionice1
-Sat Dec 1 22:17:59 UTC 2018  End function with ionice1
-Sat Dec 1 22:17:59 UTC 2018  End function with ionice3
+$ cat ionice.log
+Вс дек 2 01:35:38 MSK 2018  Start function with ionice1
+Вс дек 2 01:35:38 MSK 2018  Start function with ionice3
+Вс дек 2 01:36:24 MSK 2018  End function with ionice3
+Вс дек 2 01:36:37 MSK 2018  End function with ionice1
 ```
 iotop output
 ```
  3364 rt/0 root        0.00 B/s   76.73 M/s  0.00 %  0.00 % dd if=/dev/urandom of=ionice-1.log bs=1M count=2500
  3365 idle root        0.00 B/s   76.75 M/s  0.00 %  0.00 % dd if=/dev/urandom of=ionice-3.log bs=1M count=2500
 ```
-Despite of ionice both processes were running for same time
 1) `nice.sh`<br/>
 реализовать 2 конкурирующих процесса по CPU. пробовать запустить с разными nice
 - Результат ДЗ - скрипт запускающий 2 процесса с разными nice и замеряющий время выполнения и лог консоли
