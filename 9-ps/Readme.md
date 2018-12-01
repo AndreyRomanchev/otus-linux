@@ -27,7 +27,7 @@ $ sudo ./lsof.py /usr/lib/firefox/omni.ja
 3) дописать обработчики сигналов в прилагаемом скрипте, оттестировать, приложить сам скрипт, инструкции по использованию
 - Результат ДЗ - рабочий скрипт который можно запустить + инструкция по использованию и лог консоли
 ```
-$ ./signal.py
+$ ./signals.py
 use kill -9 to quit
 You tried to kill me?!
 use kill -9 to quit
@@ -35,7 +35,7 @@ use kill -9 to quit
 use kill -9 to quit
 ^ZYou pressed Ctrl+Z!
 use kill -9 to quit
-[1]    25108 killed     ./signal.py
+[1]    25108 killed     ./signals.py
 ```
 4) `sudo ionice.sh`<br/>
 реализовать 2 конкурирующих процесса по IO. пробовать запустить с разными ionice
