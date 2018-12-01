@@ -1,11 +1,11 @@
 1. Попасть в систему без пароля несколькими способами
 
-a) During Grub boot add `init=/bin/sh` to the end of linux16 line
-b) During Grub boot add `rd.break` to the end of linux16 line
-c) During Grub boot add `rw init=/sysroot/bin/sh` to the end of linux16 line
-d) During Grub boot add `systemd.unit=rescue.target` to the end of linux16 line
-e) During Grub boot add `systemd.unit=emergency.target` to the end of linux16 line
-f) During Grub boot add `systemd.debug-shell` to the end of linux16 line and press `Alt+F9` after boot to get debug shell
+a) During Grub boot add `init=/bin/sh` to the end of linux16 line<br/>
+b) During Grub boot add `rd.break` to the end of linux16 line<br/>
+c) During Grub boot add `rw init=/sysroot/bin/sh` to the end of linux16 line<br/>
+d) During Grub boot add `systemd.unit=rescue.target` to the end of linux16 line<br/>
+e) During Grub boot add `systemd.unit=emergency.target` to the end of linux16 line<br/>
+f) During Grub boot add `systemd.debug-shell` to the end of linux16 line and press `Alt+F9` after boot to get debug shell<br/>
 
 2. Установить систему с LVM, после чего переименовать VG
 
