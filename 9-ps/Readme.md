@@ -61,5 +61,5 @@ Despite of ionice both processes were running for same time
 Sat Dec 1 22:23:57 UTC 2018  Start function with nice-20
 Sat Dec 1 22:23:57 UTC 2018  Start function with nice19
 Sat Dec 1 22:25:00 UTC 2018  End function with nice-20
-Sat Dec 1 22:25:31 UTC 2018  End function with nice1
+Sat Dec 1 22:25:31 UTC 2018  End function with nice19
 ```
