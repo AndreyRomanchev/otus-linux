@@ -1,0 +1,7 @@
+---
+
+- name: NGINX | Install and configure NGINX
+  hosts: web
+  become: true
+  roles:
+    - nginx
