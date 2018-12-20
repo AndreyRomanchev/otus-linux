@@ -1,0 +1,7 @@
+---
+
+- name: FreeIPA | Install and configure FreeIPA
+  hosts: all
+  become: true
+  roles:
+    - freeipa
