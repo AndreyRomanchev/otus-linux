@@ -2,11 +2,11 @@
 # vim: set ft=ruby :
 
 MACHINES = {
-  :host1 => {
+  :server => {
         :box_name => "centos/7",
         :ip_addr => '192.168.11.150'
   },
-  :host2 => {
+  :client => {
         :box_name => "centos/7",
         :ip_addr => '192.168.11.151'
   }
@@ -33,7 +33,8 @@ Vagrant.configure("2") do |config|
             #mkdir -p ~root/.ssh; cp ~vagrant/.ssh/auth* ~root/.ssh
             #sed -i '65s/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
             #systemctl restart sshd
-            yum install -y vim wget
+            #yum install -y vim wget
+            setenforce 0
           SHELL
 =begin
           box.vm.provision "ansible" do |ansible|

@@ -1,0 +1,11 @@
+---
+# tasks file for freeipa-server
+- name: Install server packages
+  yum:
+    name: ['ipa-server', 'ipa-server-dns', 'bind', 'bind-dyndb-ldap']
+
+- name: Start named
+  service:
+    name: named
+    enabled: yes
+    state: started
