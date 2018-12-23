@@ -1,0 +1,32 @@
+---
+- name: Server settings and monitoring utilities
+  hosts: all
+  become: true
+  tasks:
+  - name: Install epel-release
+    yum:
+      name: epel-release
+
+  - name: Install utilities
+    yum:
+      name:
+        - sysstat
+        - iotop
+        - atop
+        - strace
+
+  - name: Set sysctl params
+    sysctl:
+      name: "{{ item.name }}"
+      value: "{{ item.value }}"
+      reload: yes
+    loop:
+      - { name: 'net.core.somaxconn', value: '1024' }
+      - { name: 'net.core.rmem_max', value: '8388608' }
+      - { name: 'net.core.wmem_max', value: '8388608' }
+      - { name: 'net.core.rmem_default', value: '65536' }
+      - { name: 'net.core.wmem_default', value: '65536' }
+      - { name: 'net.ipv4.tcp_rmem', value: '4096 87380 8388608' }
+      - { name: 'net.ipv4.tcp_wmem', value: '4096 65536 8388608' }
+      - { name: 'net.ipv4.tcp_mem', value: '8388608 8388608 8388608' }
+      - { name: 'vm.swappiness', value: '10' }
