@@ -1,2 +1,11 @@
 ---
 # tasks file for freeipa-client
+- name: Install package
+  yum:
+    name: ipa-client
+
+- name: Adding server to /etc/hosts
+  lineinfile: dest=/etc/hosts line='{{ipa_server_ip}} {{ipa_server}}.{{ipa_domain}} {{ipa_server}}'
+
+- name: Install client
+  command: ipa-client-install --domain={{ipa_domain}} --server={{ipa_server}}.{{ipa_domain}} --realm={{ipa_realm}} -p {{ipa_admin}} --password={{ipa_admin_password}} --mkhomedir --hostname={{ansible_hostname}}.{{ipa_domain}} --unattended
