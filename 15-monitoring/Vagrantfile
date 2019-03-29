@@ -2,14 +2,14 @@
 # vim: set ft=ruby :
 
 MACHINES = {
-  :host1 => {
+  :prometheus => {
         :box_name => "centos/7",
         :ip_addr => '192.168.11.150'
   },
-  #:host2 => {
-  #      :box_name => "centos/7",
-  #      :ip_addr => '192.168.11.151'
-  #}
+  :icinga => {
+        :box_name => "centos/7",
+        :ip_addr => '192.168.11.151'
+  }
 }
 
 Vagrant.configure("2") do |config|
