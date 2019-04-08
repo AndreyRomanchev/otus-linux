@@ -1,0 +1,8 @@
+---
+# tasks file for auditd
+- name: auditd config file for nginx
+  template:
+    src: files/audit.rules
+    dest: /etc/audit/rules.d/audit.rules
+  notify:
+    - restart auditd
