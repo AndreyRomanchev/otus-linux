@@ -6,3 +6,15 @@
     dest: /etc/audit/rules.d/audit.rules
   notify:
     - restart auditd
+
+- name: auditd service file
+  template:
+    src: files/auditd.service
+    dest: /usr/lib/systemd/system/auditd.service
+  notify:
+    - restart auditd
+
+- name: Make sure auditd is enabled
+  systemd:
+    enabled: true
+    name: auditd

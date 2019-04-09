@@ -1,0 +1,13 @@
+---
+# tasks file for rsyslog-server
+
+- name: Install rsyslog package
+  yum:
+    name: rsyslog
+  notify:
+    - restart rsyslog
+
+- name: Make sure rsyslog is enabled
+  systemd:
+    enabled: true
+    name: rsyslog

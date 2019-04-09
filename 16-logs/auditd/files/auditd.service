@@ -1,0 +1,17 @@
+[Unit]
+Description=Security Auditing Service
+DefaultDependencies=no
+After=local-fs.target systemd-tmpfiles-setup.service
+Conflicts=shutdown.target
+Before=sysinit.target shutdown.target
+ConditionKernelCommandLine=!audit=0
+Documentation=man:auditd(8) https://github.com/linux-audit/audit-documentation
+
+[Service]
+Type=forking
+PIDFile=/var/run/auditd.pid
+ExecStart=/sbin/auditd
+ExecStartPost=-/sbin/augenrules --load
+
+[Install]
+WantedBy=multi-user.target

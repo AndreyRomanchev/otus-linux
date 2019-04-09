@@ -12,3 +12,7 @@
   notify:
     - restart nginx
 
+- name: Make sure nginx is enabled
+  systemd:
+    enabled: true
+    name: nginx
