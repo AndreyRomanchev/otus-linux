@@ -16,3 +16,7 @@
   systemd:
     enabled: true
     name: nginx
+
+- name: Copy rsyslog settings
+  copy: src=rsyslog_nginx.conf dest=/etc/rsyslog.d/nginx.conf
+
