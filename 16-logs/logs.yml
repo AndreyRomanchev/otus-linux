@@ -7,8 +7,8 @@
     - auditd
     - nginx
 
-- name: Rsyslog | Install and configure Rsyslog Server
-  hosts: log
+- name: Rsyslog | Install and configure Rsyslog
+  hosts: all
   become: true
   roles:
-    - rsyslog-server
+    - rsyslog
