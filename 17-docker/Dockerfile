@@ -6,8 +6,8 @@ RUN apk update \
     && mkdir -p /run/nginx
 
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY nginx.vh.default.conf /etc/nginx/conf.d/default.conf
-COPY index.html /usr/share/nginx/html/index.html
+COPY nginx.vh.php.conf /etc/nginx/conf.d/default.conf
+COPY index.php /usr/share/nginx/html/index.php
 
 EXPOSE 80
 

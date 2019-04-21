@@ -1,0 +1,16 @@
+version: '3.3'
+services:
+  web:
+      image: positive/otus-nginx:php
+      ports:
+          - "80:80"
+      networks:
+          - front
+  
+  php:
+      image: php:7-fpm
+      networks:
+          - front
+
+networks:
+  front:
