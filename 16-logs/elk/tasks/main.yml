@@ -1,0 +1,43 @@
+---
+# tasks file for elk
+
+- name: Import elasticsearch key
+  rpm_key:
+    state: present
+    key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+- name: repo=elastic was added
+  copy: src=elastic.repo dest=/etc/yum.repos.d/elastic.repo
+
+- name: Install packages ELK stack 
+  when: inventory_hostname == "log"
+  yum: pkg: ['java-1.8.0-openjdk', 'elasticsearch', 'logstash', 'kibana'] state=present
+
+- name: Make sure elasticsearch is enabled
+  when: inventory_hostname == "log"
+  systemd:
+    enabled: true
+    state: started
+    name: "{{ item }}"
+  with_items:
+    - elasticsearch
+    - logstash
+    - kibana
+
+- name: install the filebeat rpm from a remote repo
+  when: inventory_hostname == "web"
+  yum:
+    name: filebeat
+    state: present
+
+- name: configure filebeat
+  when: inventory_hostname == "web"
+  copy: src=filebeat.yml dest=/etc/filebeat/filebeat.yml
+
+- name: Make sure filebeat is enabled
+  when: inventory_hostname == "web"
+  systemd:
+    enabled: true
+    state: started
+    name: filebeat
+

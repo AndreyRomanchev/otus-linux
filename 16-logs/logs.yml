@@ -12,3 +12,9 @@
   become: true
   roles:
     - rsyslog
+
+- name: ELK | Install and configure ELK stack
+  hosts: all
+  become: true
+  roles:
+    - elk
