@@ -7,7 +7,6 @@ RUN apk update \
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY nginx.vh.php.conf /etc/nginx/conf.d/default.conf
-COPY index.php /usr/share/nginx/html/index.php
 
 EXPOSE 80
 

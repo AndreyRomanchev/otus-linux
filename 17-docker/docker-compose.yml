@@ -6,11 +6,15 @@ services:
           - "80:80"
       networks:
           - front
+      volumes:
+        - ./code:/code
   
   php:
       image: php:7-fpm
       networks:
           - front
+      volumes:
+        - ./code:/code
 
 networks:
   front:
