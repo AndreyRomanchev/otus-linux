@@ -98,19 +98,28 @@ Vagrant.configure("2") do |config|
 	      echo 1 > /proc/sys/net/ipv4/ip_forward
 	      echo "net.ipv4.conf.all.forwarding=1" >> /etc/sysctl.conf
 	      sysctl -p
-          iptables -t nat -A POSTROUTING ! -d 192.168.0.0/16 -o eth0 -j MASQUERADE
+          systemctl stop firewalld && systemctl mask firewalld
+          yum install iptables-services -y && systemctl enable iptables && systemctl start iptables
+          iptables -F
+	      iptables -t nat -A POSTROUTING ! -d 192.168.0.0/16 -o eth0 -j MASQUERADE
+          service iptables save
           SHELL
       when "centralRouter"
         box.vm.provision "shell", run: "always", inline: <<-SHELL
 	      echo 1 > /proc/sys/net/ipv4/ip_forward
 	      echo "net.ipv4.conf.all.forwarding=1" >> /etc/sysctl.conf
 	      sysctl -p
-          nmcli device modify eth0 ipv4.never-default yes
-          nmcli device modify eth1 ipv4.gateway 192.168.255.1
           systemctl restart network
 	      ip route add 192.168.2.0/24 via 192.168.3.2 dev eth5
 	      ip route add 192.168.1.0/24 via 192.168.4.2 dev eth6
+          systemctl stop firewalld && systemctl mask firewalld
+          yum install iptables-services -y && systemctl enable iptables && systemctl start iptables
+          iptables -F
 	      iptables -t nat -A POSTROUTING ! -d 192.168.0.0/16 -o eth1 -j MASQUERADE
+          service iptables save
+          ip route del default via 10.0.2.2
+          nmcli device modify eth0 ipv4.never-default yes
+          nmcli device modify eth1 ipv4.gateway 192.168.255.1
           SHELL
       when "Office1Router"
         box.vm.provision "shell", run: "always", inline: <<-SHELL
