@@ -6,6 +6,7 @@ A Bind's DNS lab with Vagrant and Ansible, based on CentOS 7.
 
 <code>
     vagrant ssh client1
+    
     vagrant ssh client2
 </code>
 
