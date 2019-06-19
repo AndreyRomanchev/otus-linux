@@ -4,11 +4,10 @@ A Bind's DNS lab with Vagrant and Ansible, based on CentOS 7.
 
 # Playground
 
-<code>
-    vagrant ssh client1
-    
-    vagrant ssh client2
-</code>
+```
+   vagrant ssh client1
+   vagrant ssh client2
+```
 
   * zones: dns.lab, reverse dns.lab and ddns.lab
   * ns01 (192.168.50.10)
