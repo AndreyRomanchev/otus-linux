@@ -37,7 +37,6 @@ traceroute to 10.3.0.1 (10.3.0.1), 30 hops max, 60 byte packets
 ```
 ```
 [vagrant@R3 ~]$ traceroute -n 10.1.0.1
-[vagrant@R3 ~]$ traceroute -n 10.1.0.1
 traceroute to 10.1.0.1 (10.1.0.1), 30 hops max, 60 byte packets
  1  192.168.23.1  0.538 ms  0.368 ms  0.385 ms
  2  10.1.0.1  0.869 ms  0.661 ms  0.719 ms
