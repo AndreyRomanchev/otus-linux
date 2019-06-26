@@ -1,0 +1,115 @@
+# -*- mode: ruby -*-
+# vim: set ft=ruby :
+
+MACHINES = {
+  :inetRouter => {
+        :box_name => "centos/7",
+        :net => [
+                   {ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.240", virtualbox__intnet: "router-net"},
+               ]
+  },
+
+  :inetRouter2 => {
+        :box_name => "centos/7",
+        :net => [
+                  {ip: '192.168.255.3', adapter: 2, netmask: "255.255.255.240", virtualbox__intnet: "router-net"},
+                ]
+},
+  :centralRouter => {
+        :box_name => "centos/7",
+        :net => [
+                   {ip: '192.168.255.2', adapter: 2, netmask: "255.255.255.240", virtualbox__intnet: "router-net"},
+                   {ip: '192.168.0.1', adapter: 3, netmask: "255.255.255.240", virtualbox__intnet: "dir-net"},
+                ]
+  },
+  
+  :centralServer => {
+        :box_name => "centos/7",
+        :net => [
+                   {ip: '192.168.0.2', adapter: 2, netmask: "255.255.255.240", virtualbox__intnet: "dir-net"},
+                ]
+  },
+  
+}
+
+Vagrant.configure("2") do |config|
+
+  MACHINES.each do |boxname, boxconfig|
+      
+    config.vm.define boxname do |box|
+
+        box.vm.box = boxconfig[:box_name]
+        box.vm.host_name = boxname.to_s
+
+        config.vm.provider "virtualbox" do |v|
+          v.memory = 256
+        end
+
+        boxconfig[:net].each do |ipconf|
+          box.vm.network "private_network", ipconf
+        end
+        
+        if boxconfig.key?(:public)
+          box.vm.network "public_network", boxconfig[:public] 
+        end
+
+        box.vm.provision "shell", inline: <<-SHELL
+          mkdir -p ~root/.ssh
+          cp ~vagrant/.ssh/auth* ~root/.ssh
+        SHELL
+        
+        case boxname.to_s
+          when "inetRouter"
+            box.vm.provision "shell", run: "always", inline: <<-SHELL
+            yum install -y iptables-services vim
+            cp /vagrant/inetrouter.rules /etc/sysconfig/iptables
+            systemctl restart iptables
+            sysctl net.ipv4.conf.all.forwarding=1
+            ip route add 192.168.0.0/16 via 192.168.255.2
+            sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+            service sshd restart
+            SHELL
+          when "inetRouter2"
+            #box.vm.network 'forwarded_port', guest: 8080, host: 8080, host_ip: '127.0.0.1'
+            box.vm.provision "shell", run: "always", inline: <<-SHELL
+              yum install -y vim
+              ip route add 192.168.0.0/16 via 192.168.255.2
+              nmcli device modify eth0 ipv4.never-default yes
+              nmcli device modify eth1 ipv4.gateway 192.168.255.1
+              systemctl start firewalld
+              firewall-cmd --add-masquerade --permanent
+              firewall-cmd --add-forward-port=port=8080:proto=tcp:toport=80:toaddr=192.168.0.2 --permanent
+              firewall-cmd --reload
+            SHELL
+          when "centralRouter"
+            box.vm.provision "shell", run: "always", inline: <<-SHELL
+              echo net.ipv4.conf.all.forwarding = 1 >> /etc/sysctl.conf
+              echo net.ipv4.ip_forward = 1 >> /etc/sysctl.conf
+              sysctl -p /etc/sysctl.conf
+              nmcli device modify eth0 ipv4.never-default yes
+              nmcli device modify eth1 ipv4.gateway 192.168.255.1
+              systemctl restart firewalld && systemctl enable firewalld
+              firewall-cmd --add-masquerade --permanent
+              firewall-cmd --direct --permanent --passthrough ipv4 -t nat -I POSTROUTING -o eth1 -j MASQUERADE -s 192.168.0.0/24
+              firewall-cmd --reload
+              yum install nmap vim -y
+              chmod +x /vagrant/knock.sh
+              systemctl stop firewalld
+              setenforce 0
+              SHELL
+          when "centralServer"
+            box.vm.provision "shell", run: "always", inline: <<-SHELL
+              nmcli device modify eth0 ipv4.never-default yes
+              nmcli device modify eth1 ipv4.gateway 192.168.0.1
+              systemctl restart network
+              yum install -y epel-release
+              yum install -y nginx vim
+              systemctl enable nginx
+              systemctl start nginx
+              systemctl stop firewalld
+              setenforce 0
+              SHELL
+      end
+    end
+  end
+end
