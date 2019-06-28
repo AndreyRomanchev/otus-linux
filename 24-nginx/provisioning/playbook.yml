@@ -1,0 +1,26 @@
+---
+- hosts: web
+  become: yes
+  tasks:
+    - name: install epel
+      yum:
+        name: epel-release
+    - name: install packages
+      yum:
+        name: "{{ packages }}"
+      vars:
+        packages:
+          - nginx
+          - vim
+          - traceroute
+    - name: copy nginx.conf
+      copy: src=nginx.conf dest=/etc/nginx/nginx.conf
+      notify: restart nginx
+    - name: copy default.conf
+      copy: src=default.conf dest=/etc/nginx/conf.d/default.conf
+      notify: restart nginx
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
