@@ -35,4 +35,4 @@ andreyr@andreyr-pc ~ curl otus-test.lan --cookie "VAR=cookiemonsterlovescookies"
 ...
 ```
 How it looks in browser<br>
-![screenshot](screenshot.jpg)
+![screenshot](screenshot.png)
