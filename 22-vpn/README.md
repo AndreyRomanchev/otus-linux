@@ -41,7 +41,7 @@ TCP window size: 81.0 KByte (default)
 ```
 
 
-1. Поднять RAS на базе OpenVPN с клиентскими сертификатами
+2. Поднять RAS на базе OpenVPN с клиентскими сертификатами
 ```
 [vagrant@ovpn2 ~]$ ping 192.168.10.100 -c 3
 PING 192.168.10.100 (192.168.10.100) 56(84) bytes of data.
