@@ -1,0 +1,128 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: Install epel
+    yum:
+      name: epel-release
+  - name: install packages
+    yum: name="{{ packages }}"
+    vars:
+      packages:
+        - bridge-utils
+        - openvpn
+
+- hosts: ovpn1
+  become: yes
+  vars:
+    ipaddr: 192.168.10.100
+  tasks:
+  - name: Update /etc/sysconfig/network-scripts/ifcfg-br0
+    template:
+      src: ifcfg-br0.j2
+      dest: /etc/sysconfig/network-scripts/ifcfg-br0
+      mode: 0644
+    notify:
+      - restart network
+  - name: Update /etc/sysconfig/network-scripts/ifcfg-eth1
+    copy:
+      src: ifcfg-eth1
+      dest: /etc/sysconfig/network-scripts/ifcfg-eth1
+      mode: 0644
+    notify:
+      - restart network
+  - name: Update /etc/openvpn/br.sh
+    copy:
+      src: br.sh
+      dest: /etc/openvpn/br.sh
+      mode: 0755
+  - name: Update /usr/lib/systemd/system/openvpn-server@.service
+    copy:
+      src: openvpn-server@.service
+      dest: /usr/lib/systemd/system/openvpn-server@.service
+      mode: 0644
+    notify:
+      - restart openvpn
+  - name: Update /etc/openvpn/server/static.key
+    copy:
+      src: static.key
+      dest: /etc/openvpn/server/static.key
+      mode: 0600
+    notify:
+      - restart openvpn
+  - name: Update /etc/openvpn/server/server.conf
+    copy:
+      src: openvpn-server.conf
+      dest: /etc/openvpn/server/server.conf
+      mode: 0644
+    notify:
+      - restart openvpn
+  handlers:
+  - name: restart network
+    systemd:
+      state: restarted
+      daemon_reload: yes
+      name: network
+  - name: restart openvpn
+    systemd:
+      state: restarted
+      daemon_reload: yes
+      name: openvpn-server@server
+
+- hosts: ovpn2
+  become: yes
+  vars:
+    ipaddr: 192.168.10.101
+  tasks:
+  - name: Update /etc/sysconfig/network-scripts/ifcfg-br0
+    template:
+      src: ifcfg-br0.j2
+      dest: /etc/sysconfig/network-scripts/ifcfg-br0
+      mode: 0644
+    notify:
+      - restart network
+  - name: Update /etc/sysconfig/network-scripts/ifcfg-eth1
+    copy:
+      src: ifcfg-eth1
+      dest: /etc/sysconfig/network-scripts/ifcfg-eth1
+      mode: 0644
+    notify:
+      - restart network
+  - name: Update /etc/openvpn/br.sh
+    copy:
+      src: br.sh
+      dest: /etc/openvpn/br.sh
+      mode: 0755
+  - name: Update /usr/lib/systemd/system/openvpn-client@.service
+    copy:
+      src: openvpn-client@.service
+      dest: /usr/lib/systemd/system/openvpn-client@.service
+      mode: 0644
+    notify:
+      - restart openvpn
+  - name: Update /etc/openvpn/client/static.key
+    copy:
+      src: static.key
+      dest: /etc/openvpn/client/static.key
+      mode: 0600
+    notify:
+      - restart openvpn
+  - name: Update /etc/openvpn/client/client.conf
+    copy:
+      src: openvpn-client.conf
+      dest: /etc/openvpn/client/client.conf
+      mode: 0644
+    notify:
+      - restart openvpn
+  handlers:
+  - name: restart network
+    systemd:
+      state: restarted
+      daemon_reload: yes
+      name: network
+  - name: restart openvpn
+    systemd:
+      state: restarted
+      daemon_reload: yes
+      name: openvpn-client@client
+
