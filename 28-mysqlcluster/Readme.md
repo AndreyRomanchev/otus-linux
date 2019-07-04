@@ -79,6 +79,8 @@ MySQL  JS > shell.connect('root@mysql-router:6446', 'otus')
 }
 ```
 
+![1](1.png)<br>
+
 ```
 docker-compose down
 ```
