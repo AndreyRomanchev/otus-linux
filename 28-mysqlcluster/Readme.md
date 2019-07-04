@@ -38,7 +38,7 @@ MySQL  JS > shell.connect('root@mysql-router:6446', 'otus')
     No default schema selected; type \use <schema> to set one.
     <ClassicSession:root@mysql-router:6446>
 
- MySQL  node1:3306 ssl  JS > dba.getCluster('otusCluster').status()
+ MySQL  mysql-router:6446 ssl  JS > dba.getCluster('otusCluster').status()
 {
     "clusterName": "otusCluster",
     "defaultReplicaSet": {
