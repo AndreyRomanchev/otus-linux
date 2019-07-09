@@ -1,0 +1,28 @@
+---
+- hosts: all
+  become: True
+  tasks:
+  - name: Add records to /etc/hosts
+    lineinfile:
+      path: /etc/hosts
+      state: present
+      line: '{{ item.ip }} {{ item.name }}'
+    with_items:
+      - { ip: 172.16.0.2, name: server.otus.local }
+      - { ip: 172.16.0.3, name: client.otus.local }
+
+- hosts: server
+  become: True
+  roles:
+    - role: postfix-server
+      allowed_networks: "172.16.0.0/16"
+      listen_ip: "172.16.0.2, 10.0.2.15"
+    - role: dovecot
+      user: vagrant
+      password: password
+
+- hosts: client
+  become: True
+  roles:
+    - role: postfix-client
+      relay_host: server.otus.local

@@ -1,0 +1,9 @@
+Return-Path: <bytamine@otus.local>
+X-Original-To: vagrant@server.otus.local
+Delivered-To: vagrant@server.otus.local
+Received: from server.otus.local (gateway [10.0.2.2])
+	by server.otus.local (Postfix) with ESMTP id 4EDAD2000073
+	for <vagrant@server.otus.local>; Tue,  9 Jul 2019 19:54:50 +0000 (UTC)
+Subject: telnet generated mail
+
+good news, everyone!
